@@ -1,0 +1,5 @@
+vendor/*
+src/FrameWork/Config/*
+public/static/*
+public/.htaccess
+composer.lock
