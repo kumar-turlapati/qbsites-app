@@ -29,8 +29,6 @@ class CatalogsController {
     }
 
     $api_response = $this->catalogs_model->get_catalog_details($catalog_params);
-    dump($api_response);
-    exit;
     if($api_response['status']) {
       $catalog_response = $api_response['response'];
     } else {
@@ -40,6 +38,7 @@ class CatalogsController {
     // prepare form variables.
     $template_vars = array(
       'catalog_details' => $catalog_response,
+      'org_code' => $catalog_params['clientCode'],
     );
 
     // build variables

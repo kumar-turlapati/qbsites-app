@@ -2,8 +2,7 @@
 
 namespace FrameWork;
 
-class Constants
-{
+class Constants {
 
 
 }
