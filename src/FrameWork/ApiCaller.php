@@ -21,26 +21,22 @@ class ApiCaller
     }
 	}
 
-	public function sendRequest($method='',$uri='',$param_array=array(),$process_response=true,$debug=false) {
+	public function sendRequest($method='',$uri='',$param_array=[],$process_response=true,$debug=false,$org_id='') {
 
-		# prepare headers.
+		// prepare headers.
 		self::$instance->setHeader('Content-Type', 'application/json');
-		if($uri !== 'authorize' && $uri !== 'send-otp' && $uri !== 'forgot-password' && $uri !== 'reset-password') {
-			# get access token
-			$access_token = Utilities::getAuthToken();
-			self::$instance->setHeader('Access-Token', $access_token);
-		}
+		self::$instance->setHeader('Org-Id', $org_id);
 
-		# get api environment
+		// get api environment
 		$this->api_url = Utilities::get_api_environment();
 
-		# prepare end point
+		// prepare end point
 		$end_point = $this->api_url.'/'.$uri;
 		// dump($param_array);
 		// echo 'end point is....'.$end_point;
 		// exit;
 
-		# initiate CURL request.
+		// initiate CURL request.
 		switch ($method) {
 			case 'post':
 				self::$instance->post($end_point, $param_array);	
@@ -116,6 +112,4 @@ class ApiCaller
 
 		return $response;
 	}
- 
-
-}
+ }

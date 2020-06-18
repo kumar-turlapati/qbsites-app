@@ -32,7 +32,6 @@ class Framework {
   public function handle(Request $request) {
     $this->matcher->getContext()->fromRequest($request);
     $path = $request->getPathInfo();
-
     try {
       $request->attributes->add($this->matcher->match($path));
       $controller = $this->resolver->getController($request);
