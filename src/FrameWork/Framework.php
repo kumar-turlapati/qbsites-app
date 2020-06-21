@@ -15,7 +15,7 @@ ini_set('date.timezone', 'Asia/Kolkata');
 
 if(Utilities::is_session_started() === FALSE) session_start();
 
-class Framework {
+class FrameWork {
 
   protected $matcher;
   protected $resolver;

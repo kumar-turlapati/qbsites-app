@@ -17,7 +17,7 @@ $context = new Routing\RequestContext();
 $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
-$framework = new Framework\Framework($matcher, $resolver);
+$framework = new FrameWork\FrameWork($matcher, $resolver);
 $response = $framework->handle($request);
 
 $response->send();
