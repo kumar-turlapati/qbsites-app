@@ -1,36 +1,13 @@
-<?php 
-  if(isset($view_vars['page_title']) && $view_vars['page_title'] !== '') {
-    $page_title_browser = $view_vars['page_title'].' - QwikBills';
-  } else {
-    $page_title_browser = 'QwikBills';
-  }
-?>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo $page_title_browser ?></title>
-<link href="/assets/css/bootstrap-theme.css" rel="stylesheet">
-<link rel="icon" href="../assets/img/favicon.ico" />
-<link href="/assets/css/elegant-icons-style.css" rel="stylesheet" />
-<link href="/assets/css/font-awesome.min.css" rel="stylesheet" />
-<link href="/assets/css/style.css<?php echo '?'.mt_rand() ?>" rel="stylesheet">
-<link href="/assets/css/style-responsive.css<?php echo '?'.mt_rand() ?>" rel="stylesheet">
-<link href="/assets/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-<link href="/assets/datetime/datepicker/css/datepicker.css" rel="stylesheet" />
-<link href="/assets/datetime/timepicker/css/timepicker.css" rel="stylesheet" />
-<link href="/assets/js/jauto/styles.css" rel="stylesheet" />
-
-<?php if(isset($path_url) && $path_url === '/dashboard'): ?>
-  <link href="/assets/js/jqplot1.0.9/jquery.jqplot.min.css" rel="stylesheet" />
-<?php endif; ?>
-
-<?php if(isset($path_url) && $path_url === '/login'): ?>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<?php endif; ?>
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <script src="js/respond.min.js"></script>
-      <script src="js/lte-ie7.js"></script>
-    <![endif]-->
-</head>
+  <!-- meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Basic Google fonts start here -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 4.4.1 framwork styles -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- card animation styles -->
+  <link rel="stylesheet" href="/assets/css/aos.css">
+  <link rel="stylesheet" href="/assets/css/fancybox.min.css">
+  <!-- custom styles -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/custom-styles.css">
+  <title><?php echo $page_title ?></title>

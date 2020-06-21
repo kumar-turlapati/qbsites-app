@@ -1,7 +1,14 @@
-<section id="container" class="">
-  <footer class="footer">
-  	<?php /*
-  	<div class="col-md-5 footer-logo"><img src="/assets/img/tripexpert-logo.png"></div> */ ?>
-  	<div class="copy-rights" style="text-align: center;font-weight: bold;"><p>&copy;&nbsp;2017&nbsp;-&nbsp;<?php echo date("Y") ?>, Octet Logic. All rights reserved.</p></div>
-  </footer>
-</section>
+<?php
+	$is_app_exists = $ios_url !== '' || $android_url !== '' ? true : false;
+?>
+
+<div class="gridContainer">
+  <div class="footerTop">
+  	<?php if($is_app_exists): ?>
+    	<div class="appDownload">For more galleries and latest updates <br /><button class="btn btn-primary">Download APP</button></div>
+    <?php else : ?>
+    	<div class="appDownload">Publish your Catalog, Share, Get Orders online <br /><button class="btn btn-primary" onclick="window.open('https://www.qwikbills.com')">Know More</button></div>
+    <?php endif; ?>
+    <div class="poweredBy">Powered by <br /><a href="https://www.qwikbills.com/"><img src="/images/logo.png" alt="" /></a></div>
+  </div>
+</div>
