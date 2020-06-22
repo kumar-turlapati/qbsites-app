@@ -86,6 +86,7 @@
 	          </div>
 	          <!-- bottom actions -->
 	          <div class="bottomActions">
+	          	<input type="hidden" value="<?php echo $_SESSION['catalog_hash'] ?>" id="ch" />
 	          	<form id="orderSubmit" method="POST" autocomplete="off">
 		            <div class="userForm">
 		              <div class="formCol">

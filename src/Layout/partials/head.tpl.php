@@ -10,4 +10,5 @@
   <link rel="stylesheet" href="/assets/css/fancybox.min.css">
   <!-- custom styles -->
   <link rel="stylesheet" type="text/css" href="/assets/css/custom-styles.css">
+  <link rel="icon" href="/images/favicon.ico" />
   <title><?php echo $page_title ?></title>

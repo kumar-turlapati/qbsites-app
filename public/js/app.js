@@ -80,13 +80,16 @@ $(document).ready(function(){
 
 	$('#otpBtn').on('click', function(e){
 		e.preventDefault();
+		$(this).attr('disabled', true);
+
 		var mobileNo = $('#mobileNumber').val();
 		var businessName = $('#businessName').val();
 		if(businessName.length === 0) {
 			bootbox.alert({
 		    message: 'Please enter your personal name (or) business name first',
 			});
-			return;			
+			$(this).attr('disabled', false);
+			return;
 		}
 
 		if(mobileNo.length !== 10 ) {
@@ -94,6 +97,7 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no.',
 			});
 			$('#mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return;			
 		}
 		mobileNo = parseInt(mobileNo);
@@ -101,6 +105,7 @@ $(document).ready(function(){
 	    $.ajax("/send-otp/"+mobileNo, {
 	    	type: "POST",
 	      success: function(otpResponse) {
+	      	// console.log(otpResponse);
 	      	if(otpResponse.status) {
 	      		$('#otpBtn').hide();
 	      		$('#otp').attr('disabled', false);
@@ -112,6 +117,7 @@ $(document).ready(function(){
 						bootbox.alert({
 					    message: 'An error occurred while sending Otp :(',
 						});
+						$(this).attr('disabled', false);
 						return false;
 	      	}
 	      },
@@ -119,6 +125,7 @@ $(document).ready(function(){
 					bootbox.alert({
 				    message: 'An error occurred :(',
 					});
+					$(this).attr('disabled', false);
 					return false;
 	      }
 	    });
@@ -127,6 +134,7 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no.',
 			});
 			$('#mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return false;			
 		}
 	});
@@ -142,6 +150,7 @@ $(document).ready(function(){
 			bootbox.alert({
 		    message: 'Please enter your personal name (or) business name first',
 			});
+			$(this).attr('disabled', false);
 			return;			
 		}
 		if(mobileNo.length !== 10 ) {
@@ -149,6 +158,7 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no.',
 			});
 			$('#mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return;			
 		}
 		mobileNo = parseInt(mobileNo);
@@ -164,6 +174,7 @@ $(document).ready(function(){
 						bootbox.alert({
 					    message: 'An error occurred while sending Otp :(',
 						});
+						$(this).attr('disabled', false);
 						return false;
 	      	}
 	      },
@@ -171,6 +182,7 @@ $(document).ready(function(){
 					bootbox.alert({
 				    message: 'An error occurred :(',
 					});
+					$(this).attr('disabled', false);
 					return false;
 	      }
 	    });
@@ -179,13 +191,15 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no.',
 			});
 			$('#mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return false;			
 		}
 	});	
 
 	$('#orderSubmit').submit(function(e){
 		e.preventDefault();
-
+		$(this).attr('disabled', true);
+		$('#resendOtpBtn').hide();
 		var form = $(this);
 		var mobileNo = $('#mobileNumber').val();
 		var businessName = $('#businessName').val();
@@ -194,6 +208,7 @@ $(document).ready(function(){
 			bootbox.alert({
 		    message: 'Please enter your personal name (or) business name',
 			});
+			$(this).attr('disabled', false);
 			return;			
 		}
 		if(mobileNo.length !== 10 ) {
@@ -201,6 +216,7 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no.',
 			});
 			$('#mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return;			
 		}
 		if(otp.length !== 4 ) {
@@ -208,6 +224,7 @@ $(document).ready(function(){
 		    message: 'Invalid otp',
 			});
 			$('#otp').val('');
+			$(this).attr('disabled', false);
 			return;			
 		}
 
@@ -219,21 +236,27 @@ $(document).ready(function(){
         url: '/order/submit',
         data: form.serialize(),
         success: function(orderResponse) {
+        	// console.log(orderResponse);
         	if(!orderResponse.status) {
 						bootbox.alert({
 					    message: orderResponse.reason,
 						});
 						return false;
+        	} else {
+						bootbox.alert({
+					    message: 'Your Order has been submitted successfully with Order No. '+orderResponse.orderNo,
+					    callback: function() {
+					    	var ch = $('#ch').val();
+					    	window.location.href = '/catalog/view/'+ch;
+					    }
+						});
         	}
-
-
-
-
         },
 	      error: function(e) {
 					bootbox.alert({
 				    message: 'An error occurred while submitting your order :(',
 					});
+					$(this).attr('disabled', false);
 					return false;
 	      }
       });			
@@ -242,6 +265,7 @@ $(document).ready(function(){
 		    message: 'Invalid mobile no. (or) otp',
 			});
 			$('#otp, #mobileNumber').val('');
+			$(this).attr('disabled', false);
 			return;	
 		}
 

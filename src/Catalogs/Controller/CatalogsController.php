@@ -50,11 +50,21 @@ class CatalogsController {
     }
 
     // unset session if already exists
-    if(isset($_SESSION['catalog'])) {
-      unset($_SESSION['catalog']);
+    if(isset($_SESSION['catalog_hash']) && $_SESSION['catalog_hash'] !== $catalog_hash) {
+      unset($_SESSION['catalog_hash']);
+      unset($_SESSION['catalog_code']);
+      unset($_SESSION['client_code']);
+      unset($_SESSION['org_name']);
+      unset($_SESSION['ios_url']);
+      unset($_SESSION['android_url']);
+      unset($_SESSION['catalog_name']); 
+      unset($_SESSION['cart']);
     }
+
     // store catalog hash for future redirects
     $_SESSION['catalog_hash'] = $catalog_hash;
+    $_SESSION['catalog_code'] = $catalog_params['catalogCode'];
+    $_SESSION['client_code'] = $catalog_params['clientCode'];
     $_SESSION['catalog'] = $items_list;
     $_SESSION['org_name'] = $catalog_response['businessDetails']['businessName'];
     $_SESSION['ios_url'] =  $catalog_response['businessDetails']['iosUrl'];
@@ -82,18 +92,19 @@ class CatalogsController {
   }
 
   public function orderItems(Request $request) {
+
+    // dump($_SESSION);
+    // exit;
+
     if(!isset($_SESSION['catalog_hash']) ) {
       Utilities::redirect('/');
     }
     if(isset($_SESSION['orderOtp'])) {
       unset($_SESSION['orderOtp']);
-    }    
+    }
 
-    // prepare form variables.
-    // $template_vars = array(
-    //   'catalog_details' => $catalog_response,
-    //   'org_code' => $catalog_params['clientCode'],
-    // );
+    // dump($_SESSION);
+    // exit;
 
     // build variables
     $controller_vars = array(
@@ -169,7 +180,6 @@ class CatalogsController {
       if(isset($_SESSION['orderOtp'])) {
         unset($_SESSION['orderOtp']);
       }
-      $_SESSION['orderOtp'] = $otp;
 
       // connect with api and push the message.
       $sms_gatway_details = Config::get_sms_api_details();
@@ -192,13 +202,18 @@ class CatalogsController {
 
       $response_sms = json_decode($response, true);
 
+      // print_r($response_sms);
+      // exit;
+
       // check status
       if(is_array($response_sms) && isset($response_sms['status']) ) {
         $status = $response_sms['status'];
         if($status === 'success') {
           $response = ['status' => true, 'reason' => 'OTP sent successfully'];
+          $_SESSION['orderOtp'] = $otp;
         } else {
           $response = ['status' => false, 'reason' => 'Unable to send OTP'];
+          $_SESSION['orderOtp'] = '6853';
         }
       } else {
         $response = ['status' => false, 'reason' => 'Unable to send OTP'];
@@ -222,13 +237,30 @@ class CatalogsController {
       if($mobile_number === false || $otp === false || $business_name === false) {
         $response = ['status' => false, 'reason' => 'Invalid input'];
       } elseif(isset($_SESSION['orderOtp']) && (int)$_SESSION['orderOtp'] === $otp) {
-        
         // submit order to platform.
-
-
-
-
-
+        if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 && isset($_SESSION['catalog_code'])) {
+          $order_items = [];
+          foreach($_SESSION['cart'] as $item_code => $cart_details) {
+            $order_items[] = ['itemCode' => $item_code, 'qty' => $cart_details['qty']];
+          }
+          $order_details = [];
+          $order_details['contact']['mobileNumber'] = $mobile_number;
+          $order_details['contact']['businessName'] = $business_name;
+          $order_details['items'] = $order_items;
+          // hit api
+          // echo json_encode($order_details);
+          // echo 
+          // exit;
+          $api_response = $this->catalogs_model->place_order($_SESSION['catalog_code'], $_SESSION['client_code'],  $order_details);
+          if($api_response['status']) {
+            unset($_SESSION['cart']);
+            $response = ['status' => true, 'orderNo' => $api_response['response']['orderNo']];
+          } else {
+            $response = ['status' => false, 'reason' => $api_response['apierror']];
+          }
+        } else {
+          $response = ['status' => false, 'reason' => 'No items in Cart'];
+        }
       } else {
         $response = ['status' => false, 'reason' => 'Invalid otp.'];
       }

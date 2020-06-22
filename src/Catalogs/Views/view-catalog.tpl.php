@@ -2,7 +2,7 @@
   use FrameWork\Utilities;
   use FrameWork\Config\Config;
 
-  $s3_config = Config::get_s3_details();
+  $cdn_url = Config::get_cdn_url();
 
   $business_details = $catalog_details['businessDetails'];
   $catalog_items = $catalog_details['catalogItems'];
@@ -18,7 +18,7 @@
 	unset($catalog_details['businessDetails']);  
 	unset($catalog_details['businessLocations']);
 
- 	$image_end_point = 'https://'.$s3_config['BUCKET_NAME'].'.'.$s3_config['END_POINT_FULL'].'/'.$org_code;
+ 	$image_end_point = $cdn_url.'/'.$org_code;
 
  	// dump($catalog_items);
  	// exit;
