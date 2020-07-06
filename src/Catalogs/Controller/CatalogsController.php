@@ -186,8 +186,8 @@ class CatalogsController {
       $apiKey = urlencode($sms_gatway_details['apiKey']);
       
       // Message details
-      $sender = urlencode('TXTLCL');
-      $message = rawurlencode("OTP for submitting your order at qwikbills platform is $otp");
+      $sender = urlencode('QWIKBL');
+      $message = rawurlencode("OTP for submitting your order at Qwikbills Platform is $otp");
      
       // Prepare data for POST request
       $data = array('apikey' => $apiKey, 'numbers' => $mobile_no_with_country_code, "sender" => $sender, "message" => $message);
